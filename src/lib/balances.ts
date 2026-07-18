@@ -42,7 +42,7 @@ export async function getTenantBalance(tenantId: string): Promise<{
 
   const [rentCharges, utilitySplits] = await Promise.all([
     db.rentCharge.findMany({
-      where: { lease: { tenantId } },
+      where: { lease: { tenantId }, waived: false },
       include: {
         payments: true,
         lease: { include: { unit: { include: { property: true } } } },

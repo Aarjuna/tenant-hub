@@ -98,6 +98,9 @@ model RentCharge {
   periodStart DateTime
   dueDate     DateTime
   amount      Decimal   @db.Decimal(10, 2)
+  // Manually cleared by the admin (e.g. created in error). Excluded from balances, and left
+  // alone by the lazy monthly generator since it already exists for that period.
+  waived      Boolean   @default(false)
   payments    Payment[]
   createdAt   DateTime  @default(now())
 

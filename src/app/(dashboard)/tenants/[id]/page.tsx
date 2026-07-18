@@ -16,7 +16,7 @@ import {
   sectionTitleClass,
 } from "@/components/ui";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
-import { deleteTenant, sendManualReminder, updateTenant } from "./actions";
+import { deleteBalanceLine, deleteTenant, sendManualReminder, updateTenant } from "./actions";
 
 export default async function TenantDetailPage({
   params,
@@ -146,6 +146,17 @@ export default async function TenantDetailPage({
                     </button>
                   </form>
                 )}
+                <form action={deleteBalanceLine} className="ml-auto">
+                  <input type="hidden" name="tenantId" value={tenant.id} />
+                  <input type="hidden" name="lineKind" value={line.kind} />
+                  <input type="hidden" name="lineId" value={line.id} />
+                  <ConfirmSubmitButton
+                    className={dangerButtonClass}
+                    confirmMessage={`Remove this ${line.label} charge ($${line.outstanding.toFixed(2)} outstanding) from the balance? ${line.kind === "utility" ? "Any payments already recorded against it are removed too. " : ""}This cannot be undone.`}
+                  >
+                    Delete
+                  </ConfirmSubmitButton>
+                </form>
               </div>
             </div>
           ))}

@@ -80,6 +80,34 @@ export async function sendManualReminder(formData: FormData): Promise<void> {
   revalidatePath(`/tenants/${tenantId}`);
 }
 
+export async function deleteBalanceLine(formData: FormData): Promise<void> {
+  await requireAdminSession();
+
+  const tenantId = String(formData.get("tenantId") ?? "");
+  const lineKind = String(formData.get("lineKind") ?? "");
+  const lineId = String(formData.get("lineId") ?? "");
+
+  if (!tenantId || !lineId || (lineKind !== "rent" && lineKind !== "utility")) {
+    throw new Error("Invalid balance line");
+  }
+
+  if (lineKind === "rent") {
+    // RentCharges for active leases are lazily regenerated for every month up to today, so a
+    // hard delete wouldn't stick — it would just reappear on the next balance calculation.
+    // Marking it waived keeps the row (and any payments already made against it) but excludes
+    // it from outstanding balances, and the generator leaves existing rows alone.
+    await db.rentCharge.update({ where: { id: lineId }, data: { waived: true } });
+  } else {
+    // UtilityBillSplits are only ever created once (when the bill is added), so a hard delete
+    // is safe here — nothing will regenerate it. This also cascades away any payments made
+    // against it (the UI warns about this before submitting).
+    await db.utilityBillSplit.delete({ where: { id: lineId } });
+  }
+
+  revalidatePath(`/tenants/${tenantId}`);
+  revalidatePath("/");
+}
+
 export async function deleteTenant(formData: FormData): Promise<void> {
   await requireAdminSession();
 
