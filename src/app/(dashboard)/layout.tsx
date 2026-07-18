@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </nav>
           </div>
           <form action="/api/logout" method="POST">
-            <button type="submit" className="text-sm text-zinc-500 hover:text-zinc-900">
+            <button type="submit" className="text-sm text-zinc-600 hover:text-zinc-900">
               Log out
             </button>
           </form>

@@ -12,12 +12,12 @@ export default async function RemindersPage() {
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold text-zinc-900">Reminders</h1>
-        <p className="mt-1 text-sm text-zinc-500">History of every reminder sent, automatic or manual.</p>
+        <p className="mt-1 text-sm text-zinc-600">History of every reminder sent, automatic or manual.</p>
       </div>
 
       <div className="overflow-hidden rounded-lg border border-zinc-200">
         <table className="w-full text-sm">
-          <thead className="bg-zinc-50 text-left text-zinc-500">
+          <thead className="bg-zinc-50 text-left text-zinc-600">
             <tr>
               <th className="px-4 py-2 font-medium">When</th>
               <th className="px-4 py-2 font-medium">Tenant</th>
@@ -30,7 +30,7 @@ export default async function RemindersPage() {
           <tbody>
             {logs.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-zinc-500">
+                <td colSpan={6} className="px-4 py-6 text-center text-zinc-600">
                   No reminders sent yet.
                 </td>
               </tr>
@@ -48,7 +48,7 @@ export default async function RemindersPage() {
                 <td className="px-4 py-2 text-zinc-700">{log.triggeredBy}</td>
                 <td className={`px-4 py-2 ${log.status === "SENT" ? "text-green-600" : "text-red-600"}`}>
                   {log.status}
-                  {log.errorMessage && <span className="ml-1 text-zinc-400">({log.errorMessage})</span>}
+                  {log.errorMessage && <span className="ml-1 text-zinc-600">({log.errorMessage})</span>}
                 </td>
               </tr>
             ))}

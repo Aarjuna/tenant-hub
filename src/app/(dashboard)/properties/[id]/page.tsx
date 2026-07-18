@@ -20,24 +20,24 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <Link href="/properties" className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/properties" className="text-sm text-zinc-600 hover:text-zinc-900">
           ← Properties
         </Link>
         <h1 className="mt-1 text-2xl font-semibold text-zinc-900">{property.name}</h1>
-        <p className="mt-1 text-sm text-zinc-500">{property.address}</p>
+        <p className="mt-1 text-sm text-zinc-600">{property.address}</p>
       </div>
 
       <div>
         <h2 className={sectionTitleClass}>Units</h2>
         <div className="mt-3 flex flex-col gap-3">
-          {property.units.length === 0 && <p className="text-sm text-zinc-500">No units yet.</p>}
+          {property.units.length === 0 && <p className="text-sm text-zinc-600">No units yet.</p>}
           {property.units.map((unit) => {
             const lease = unit.leases[0];
             return (
               <Link key={unit.id} href={`/units/${unit.id}`} className={`${cardClass} block hover:border-zinc-400`}>
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-zinc-900">{unit.label}</p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-sm text-zinc-600">
                     {lease ? `${lease.tenant.firstName} ${lease.tenant.lastName} · $${lease.rentAmount}/mo` : "Vacant"}
                   </p>
                 </div>
@@ -72,18 +72,18 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
         </div>
         <div className="mt-3 flex flex-col gap-3">
           {property.utilityBills.length === 0 && (
-            <p className="text-sm text-zinc-500">No utility bills recorded yet.</p>
+            <p className="text-sm text-zinc-600">No utility bills recorded yet.</p>
           )}
           {property.utilityBills.map((bill) => (
             <Link key={bill.id} href={`/utility-bills/${bill.id}`} className={`${cardClass} block hover:border-zinc-400`}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium capitalize text-zinc-900">{bill.type}</p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-sm text-zinc-600">
                     Billed {bill.billDate.toLocaleDateString()} · Due {bill.dueDate.toLocaleDateString()}
                   </p>
                 </div>
-                <p className="text-sm text-zinc-500">${bill.totalAmount.toFixed(2)}</p>
+                <p className="text-sm text-zinc-600">${bill.totalAmount.toFixed(2)}</p>
               </div>
             </Link>
           ))}

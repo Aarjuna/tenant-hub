@@ -15,11 +15,11 @@ export default async function TenantsPage() {
     <div className="flex flex-col gap-8">
       <div>
         <h1 className="text-2xl font-semibold text-zinc-900">Tenants</h1>
-        <p className="mt-1 text-sm text-zinc-500">Everyone currently or previously renting from you.</p>
+        <p className="mt-1 text-sm text-zinc-600">Everyone currently or previously renting from you.</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        {tenants.length === 0 && <p className="text-sm text-zinc-500">No tenants yet — add one below.</p>}
+        {tenants.length === 0 && <p className="text-sm text-zinc-600">No tenants yet — add one below.</p>}
         {tenants.map((tenant) => {
           const lease = tenant.leases[0];
           return (
@@ -29,9 +29,9 @@ export default async function TenantsPage() {
                   <p className="font-medium text-zinc-900">
                     {tenant.firstName} {tenant.lastName}
                   </p>
-                  <p className="text-sm text-zinc-500">{tenant.email || tenant.phone || "No contact info on file"}</p>
+                  <p className="text-sm text-zinc-600">{tenant.email || tenant.phone || "No contact info on file"}</p>
                 </div>
-                <p className="text-sm text-zinc-500">
+                <p className="text-sm text-zinc-600">
                   {lease ? `${lease.unit.property.name} · ${lease.unit.label}` : "No active lease"}
                 </p>
               </div>

@@ -164,7 +164,7 @@ export function UtilityBillForm({
         </div>
         {previewError && <p className="mt-3 text-sm text-red-600">{previewError}</p>}
         {!previewError && !previewSplits && (
-          <p className="mt-3 text-sm text-zinc-400">Enter a total amount to see the split.</p>
+          <p className="mt-3 text-sm text-zinc-600">Enter a total amount to see the split.</p>
         )}
       </div>
 

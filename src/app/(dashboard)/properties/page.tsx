@@ -13,12 +13,12 @@ export default async function PropertiesPage() {
     <div className="flex flex-col gap-8">
       <div>
         <h1 className="text-2xl font-semibold text-zinc-900">Properties</h1>
-        <p className="mt-1 text-sm text-zinc-500">Your rental properties and their units.</p>
+        <p className="mt-1 text-sm text-zinc-600">Your rental properties and their units.</p>
       </div>
 
       <div className="flex flex-col gap-3">
         {properties.length === 0 && (
-          <p className="text-sm text-zinc-500">No properties yet — add one below.</p>
+          <p className="text-sm text-zinc-600">No properties yet — add one below.</p>
         )}
         {properties.map((property) => (
           <Link
@@ -29,9 +29,9 @@ export default async function PropertiesPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-zinc-900">{property.name}</p>
-                <p className="text-sm text-zinc-500">{property.address}</p>
+                <p className="text-sm text-zinc-600">{property.address}</p>
               </div>
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm text-zinc-600">
                 {property.units.length} unit{property.units.length === 1 ? "" : "s"}
               </p>
             </div>

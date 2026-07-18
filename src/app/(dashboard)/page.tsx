@@ -31,11 +31,11 @@ export default async function DashboardPage() {
     <div className="flex flex-col gap-8">
       <div>
         <h1 className="text-2xl font-semibold text-zinc-900">Dashboard</h1>
-        <p className="mt-1 text-sm text-zinc-500">Everything outstanding across your properties.</p>
+        <p className="mt-1 text-sm text-zinc-600">Everything outstanding across your properties.</p>
       </div>
 
       <div className={cardClass}>
-        <p className="text-sm text-zinc-500">Total outstanding</p>
+        <p className="text-sm text-zinc-600">Total outstanding</p>
         <p className="mt-1 text-3xl font-semibold text-zinc-900">${totalOutstanding.toFixed(2)}</p>
       </div>
 
@@ -43,7 +43,7 @@ export default async function DashboardPage() {
         <h2 className={sectionTitleClass}>Tenants with a balance</h2>
         <div className="mt-3 flex flex-col gap-3">
           {withBalance.length === 0 && (
-            <p className="text-sm text-zinc-500">Nobody owes anything right now.</p>
+            <p className="text-sm text-zinc-600">Nobody owes anything right now.</p>
           )}
           {withBalance.map(({ tenant, totalOutstanding, lines }) => (
             <Link key={tenant.id} href={`/tenants/${tenant.id}`} className={`${cardClass} block hover:border-zinc-400`}>
@@ -52,7 +52,7 @@ export default async function DashboardPage() {
                   <p className="font-medium text-zinc-900">
                     {tenant.firstName} {tenant.lastName}
                   </p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-sm text-zinc-600">
                     {lines.length} outstanding item{lines.length === 1 ? "" : "s"}
                   </p>
                 </div>
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
         <div>
           <h2 className={sectionTitleClass}>Recent payments</h2>
           <div className="mt-3 flex flex-col gap-2">
-            {recentPayments.length === 0 && <p className="text-sm text-zinc-500">No payments recorded yet.</p>}
+            {recentPayments.length === 0 && <p className="text-sm text-zinc-600">No payments recorded yet.</p>}
             {recentPayments.map((payment) => (
               <div key={payment.id} className="flex items-center justify-between rounded-md border border-zinc-200 px-4 py-2 text-sm">
                 <span className="text-zinc-700">
@@ -81,7 +81,7 @@ export default async function DashboardPage() {
         <div>
           <h2 className={sectionTitleClass}>Recent reminders</h2>
           <div className="mt-3 flex flex-col gap-2">
-            {recentReminders.length === 0 && <p className="text-sm text-zinc-500">No reminders sent yet.</p>}
+            {recentReminders.length === 0 && <p className="text-sm text-zinc-600">No reminders sent yet.</p>}
             {recentReminders.map((log) => (
               <div key={log.id} className="flex items-center justify-between rounded-md border border-zinc-200 px-4 py-2 text-sm">
                 <span className="text-zinc-700">

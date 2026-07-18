@@ -19,14 +19,14 @@ export default async function NewUtilityBillPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href="/properties" className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/properties" className="text-sm text-zinc-600 hover:text-zinc-900">
           ← Properties
         </Link>
         <h1 className="mt-1 text-2xl font-semibold text-zinc-900">Add utility bill</h1>
       </div>
 
       {properties.length === 0 ? (
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-zinc-600">
           You need a property with units first.{" "}
           <Link href="/properties" className="underline">
             Add one

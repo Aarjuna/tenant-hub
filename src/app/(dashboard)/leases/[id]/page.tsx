@@ -17,13 +17,13 @@ export default async function LeaseDetailPage({ params }: { params: Promise<{ id
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href={`/units/${lease.unit.id}`} className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href={`/units/${lease.unit.id}`} className="text-sm text-zinc-600 hover:text-zinc-900">
           ← {lease.unit.property.name} — {lease.unit.label}
         </Link>
         <h1 className="mt-1 text-2xl font-semibold text-zinc-900">
           Lease — {lease.tenant.firstName} {lease.tenant.lastName}
         </h1>
-        <span className="mt-1 inline-block text-xs uppercase tracking-wide text-zinc-400">{lease.status}</span>
+        <span className="mt-1 inline-block text-xs uppercase tracking-wide text-zinc-600">{lease.status}</span>
       </div>
 
       <div className={cardClass}>
@@ -64,7 +64,7 @@ export default async function LeaseDetailPage({ params }: { params: Promise<{ id
               />
             </div>
           </div>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-zinc-600">
             Started {lease.startDate.toLocaleDateString()}
             {lease.endDate ? ` · Ended ${lease.endDate.toLocaleDateString()}` : ""}
           </p>

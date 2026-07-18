@@ -25,11 +25,11 @@ export default async function UtilityBillDetailPage({ params }: { params: Promis
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href={`/properties/${bill.property.id}`} className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href={`/properties/${bill.property.id}`} className="text-sm text-zinc-600 hover:text-zinc-900">
           ← {bill.property.name}
         </Link>
         <h1 className="mt-1 text-2xl font-semibold capitalize text-zinc-900">{bill.type} bill</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-zinc-600">
           Billed {bill.billDate.toLocaleDateString()} · Due {bill.dueDate.toLocaleDateString()} · Total $
           {bill.totalAmount.toFixed(2)} · Split {bill.splitMethod.toLowerCase().replace("_", " ")}
         </p>
@@ -46,7 +46,7 @@ export default async function UtilityBillDetailPage({ params }: { params: Promis
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-zinc-900">{split.unit.label}</p>
-                    <p className="text-sm text-zinc-500">
+                    <p className="text-sm text-zinc-600">
                       {tenant ? (
                         <Link href={`/tenants/${tenant.id}`} className="hover:underline">
                           {tenant.firstName} {tenant.lastName}

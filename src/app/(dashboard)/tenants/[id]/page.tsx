@@ -25,13 +25,13 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <div>
-          <Link href="/tenants" className="text-sm text-zinc-500 hover:text-zinc-900">
+          <Link href="/tenants" className="text-sm text-zinc-600 hover:text-zinc-900">
             ← Tenants
           </Link>
           <h1 className="mt-1 text-2xl font-semibold text-zinc-900">
             {tenant.firstName} {tenant.lastName}
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-zinc-600">
             {tenant.email || "No email"} · {tenant.phone || "No phone"}
           </p>
         </div>
@@ -46,13 +46,13 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
           <p className="text-lg font-semibold text-zinc-900">${totalOutstanding.toFixed(2)}</p>
         </div>
         <div className="mt-3 flex flex-col gap-3">
-          {lines.length === 0 && <p className="text-sm text-zinc-500">Nothing outstanding — all caught up.</p>}
+          {lines.length === 0 && <p className="text-sm text-zinc-600">Nothing outstanding — all caught up.</p>}
           {lines.map((line) => (
             <div key={`${line.kind}-${line.id}`} className={cardClass}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-zinc-900">{line.label}</p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-sm text-zinc-600">
                     {line.propertyName} {line.unitLabel} · due {line.dueDate.toLocaleDateString()}
                   </p>
                 </div>
@@ -96,7 +96,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
                 <p className="text-zinc-900">
                   {lease.unit.property.name} — {lease.unit.label}
                 </p>
-                <span className="text-xs uppercase tracking-wide text-zinc-400">{lease.status}</span>
+                <span className="text-xs uppercase tracking-wide text-zinc-600">{lease.status}</span>
               </div>
             </Link>
           ))}
@@ -106,7 +106,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
       <div>
         <h2 className={sectionTitleClass}>Payment history</h2>
         <div className="mt-3 flex flex-col gap-2">
-          {tenant.payments.length === 0 && <p className="text-sm text-zinc-500">No payments recorded yet.</p>}
+          {tenant.payments.length === 0 && <p className="text-sm text-zinc-600">No payments recorded yet.</p>}
           {tenant.payments.map((payment) => (
             <div key={payment.id} className="flex items-center justify-between rounded-md border border-zinc-200 px-4 py-2 text-sm">
               <span className="text-zinc-700">
@@ -121,7 +121,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
       <div>
         <h2 className={sectionTitleClass}>Reminder history</h2>
         <div className="mt-3 flex flex-col gap-2">
-          {tenant.reminderLogs.length === 0 && <p className="text-sm text-zinc-500">No reminders sent yet.</p>}
+          {tenant.reminderLogs.length === 0 && <p className="text-sm text-zinc-600">No reminders sent yet.</p>}
           {tenant.reminderLogs.map((log) => (
             <div key={log.id} className="flex items-center justify-between rounded-md border border-zinc-200 px-4 py-2 text-sm">
               <span className="text-zinc-700">

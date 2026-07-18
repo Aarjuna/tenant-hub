@@ -18,14 +18,14 @@ export default async function NewLeasePage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href="/properties" className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/properties" className="text-sm text-zinc-600 hover:text-zinc-900">
           ← Properties
         </Link>
         <h1 className="mt-1 text-2xl font-semibold text-zinc-900">Add lease</h1>
       </div>
 
       {tenants.length === 0 ? (
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-zinc-600">
           You need a tenant first.{" "}
           <Link href="/tenants" className="underline">
             Add one

@@ -21,7 +21,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <Link href={`/properties/${unit.property.id}`} className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href={`/properties/${unit.property.id}`} className="text-sm text-zinc-600 hover:text-zinc-900">
           ← {unit.property.name}
         </Link>
         <h1 className="mt-1 text-2xl font-semibold text-zinc-900">{unit.label}</h1>
@@ -43,7 +43,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
                 {activeLease.tenant.firstName} {activeLease.tenant.lastName}
               </Link>
             </p>
-            <p className="mt-1 text-zinc-500">
+            <p className="mt-1 text-zinc-600">
               ${activeLease.rentAmount.toFixed(2)}/mo · due day {activeLease.dueDay} · started{" "}
               {activeLease.startDate.toLocaleDateString()}
             </p>
@@ -52,14 +52,14 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
             </Link>
           </div>
         ) : (
-          <p className="mt-3 text-sm text-zinc-500">This unit is vacant.</p>
+          <p className="mt-3 text-sm text-zinc-600">This unit is vacant.</p>
         )}
       </div>
 
       <div>
         <h2 className={sectionTitleClass}>Lease history</h2>
         <div className="mt-3 flex flex-col gap-3">
-          {unit.leases.length === 0 && <p className="text-sm text-zinc-500">No leases yet.</p>}
+          {unit.leases.length === 0 && <p className="text-sm text-zinc-600">No leases yet.</p>}
           {unit.leases.map((lease) => (
             <Link key={lease.id} href={`/leases/${lease.id}`} className={`${cardClass} block hover:border-zinc-400`}>
               <div className="flex items-center justify-between">
@@ -67,12 +67,12 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
                   <p className="font-medium text-zinc-900">
                     {lease.tenant.firstName} {lease.tenant.lastName}
                   </p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-sm text-zinc-600">
                     {lease.startDate.toLocaleDateString()} –{" "}
                     {lease.endDate ? lease.endDate.toLocaleDateString() : "present"}
                   </p>
                 </div>
-                <span className="text-xs uppercase tracking-wide text-zinc-400">{lease.status}</span>
+                <span className="text-xs uppercase tracking-wide text-zinc-600">{lease.status}</span>
               </div>
             </Link>
           ))}
