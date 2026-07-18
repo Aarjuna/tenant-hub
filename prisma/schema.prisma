@@ -80,7 +80,7 @@ model Lease {
   unitId      String
   unit        Unit         @relation(fields: [unitId], references: [id], onDelete: Cascade)
   tenantId    String
-  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   rentAmount  Decimal      @db.Decimal(10, 2)
   dueDay      Int
   startDate   DateTime
@@ -135,7 +135,7 @@ model UtilityBillSplit {
 model Payment {
   id                 String            @id @default(cuid())
   tenantId           String
-  tenant             Tenant            @relation(fields: [tenantId], references: [id])
+  tenant             Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   rentChargeId       String?
   rentCharge         RentCharge?       @relation(fields: [rentChargeId], references: [id], onDelete: Cascade)
   utilityBillSplitId String?
@@ -150,7 +150,7 @@ model Payment {
 model ReminderLog {
   id                 String          @id @default(cuid())
   tenantId           String
-  tenant             Tenant          @relation(fields: [tenantId], references: [id])
+  tenant             Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   type               ReminderType
   channel            ReminderChannel
   status             ReminderStatus

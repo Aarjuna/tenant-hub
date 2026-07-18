@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireAdminSession } from "@/lib/auth/session";
 import { db } from "@/lib/db";
 import { getTenantBalance } from "@/lib/balances";
@@ -31,4 +32,19 @@ export async function sendManualReminder(formData: FormData): Promise<void> {
 
   await sendReminder({ tenant, line, channel: channel as ReminderChannel, triggeredBy: "manual" });
   revalidatePath(`/tenants/${tenantId}`);
+}
+
+export async function deleteTenant(formData: FormData): Promise<void> {
+  await requireAdminSession();
+
+  const tenantId = String(formData.get("tenantId") ?? "");
+  if (!tenantId) throw new Error("Missing tenant id");
+
+  // Cascades in the schema also remove this tenant's leases, rent charges,
+  // payments, and reminder history. Units/properties/utility bills are untouched.
+  await db.tenant.delete({ where: { id: tenantId } });
+
+  revalidatePath("/tenants");
+  revalidatePath("/");
+  redirect("/tenants");
 }
