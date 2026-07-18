@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getTenantBalance } from "@/lib/balances";
+import { formatCalendarDate } from "@/lib/formatDate";
 import {
   buttonClass,
   cardClass,
@@ -117,7 +118,7 @@ export default async function TenantDetailPage({
                 <div>
                   <p className="font-medium text-[#323338]">{line.label}</p>
                   <p className="text-sm text-zinc-600">
-                    {line.propertyName} {line.unitLabel} · due {line.dueDate.toLocaleDateString()}
+                    {line.propertyName} {line.unitLabel} · due {formatCalendarDate(line.dueDate)}
                   </p>
                 </div>
                 <p className="font-bold text-[#e2445c]">${line.outstanding.toFixed(2)}</p>

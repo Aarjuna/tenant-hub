@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { formatCalendarDate } from "@/lib/formatDate";
 import { buttonClass, cardClass, leaseStatusTone, pillClass, sectionTitleClass } from "@/components/ui";
 
 export default async function UnitDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -45,7 +46,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
             </p>
             <p className="mt-1 text-zinc-600">
               ${activeLease.rentAmount.toFixed(2)}/mo · due day {activeLease.dueDay} · started{" "}
-              {activeLease.startDate.toLocaleDateString()}
+              {formatCalendarDate(activeLease.startDate)}
             </p>
             <Link href={`/leases/${activeLease.id}`} className="mt-2 inline-block text-zinc-600 hover:text-[#323338]">
               Edit lease →
@@ -68,8 +69,8 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
                     {lease.tenant.firstName} {lease.tenant.lastName}
                   </p>
                   <p className="text-sm text-zinc-600">
-                    {lease.startDate.toLocaleDateString()} –{" "}
-                    {lease.endDate ? lease.endDate.toLocaleDateString() : "present"}
+                    {formatCalendarDate(lease.startDate)} –{" "}
+                    {lease.endDate ? formatCalendarDate(lease.endDate) : "present"}
                   </p>
                 </div>
                 <span className={pillClass(leaseStatusTone(lease.status))}>{lease.status}</span>

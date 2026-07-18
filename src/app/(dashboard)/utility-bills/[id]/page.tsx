@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { computeOutstanding } from "@/lib/balances";
+import { formatCalendarDate } from "@/lib/formatDate";
 import { cardClass, pillClass, sectionTitleClass } from "@/components/ui";
 
 export default async function UtilityBillDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -30,7 +31,7 @@ export default async function UtilityBillDetailPage({ params }: { params: Promis
         </Link>
         <h1 className="mt-1 text-2xl font-bold capitalize text-[#323338]">{bill.type} bill</h1>
         <p className="mt-1 text-sm text-zinc-600">
-          Billed {bill.billDate.toLocaleDateString()} · Due {bill.dueDate.toLocaleDateString()} · Total $
+          Billed {formatCalendarDate(bill.billDate)} · Due {formatCalendarDate(bill.dueDate)} · Total $
           {bill.totalAmount.toFixed(2)} · Split {bill.splitMethod.toLowerCase().replace("_", " ")}
         </p>
       </div>

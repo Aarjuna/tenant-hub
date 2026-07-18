@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { formatCalendarDate } from "@/lib/formatDate";
 import { buttonClass, cardClass, dangerButtonClass, inputClass, labelClass, sectionTitleClass } from "@/components/ui";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
 import { createUnit, deleteProperty } from "./actions";
@@ -81,7 +82,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                 <div>
                   <p className="font-medium capitalize text-[#323338]">{bill.type}</p>
                   <p className="text-sm text-zinc-600">
-                    Billed {bill.billDate.toLocaleDateString()} · Due {bill.dueDate.toLocaleDateString()}
+                    Billed {formatCalendarDate(bill.billDate)} · Due {formatCalendarDate(bill.dueDate)}
                   </p>
                 </div>
                 <p className="text-sm text-zinc-600">${bill.totalAmount.toFixed(2)}</p>

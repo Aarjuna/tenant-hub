@@ -1,4 +1,5 @@
 import type { BalanceLine } from "@/lib/balances";
+import { formatCalendarDate } from "@/lib/formatDate";
 
 export function renderReminderMessage(params: {
   tenantFirstName: string;
@@ -7,7 +8,7 @@ export function renderReminderMessage(params: {
 }): string {
   const { tenantFirstName, line, isOverdue } = params;
   const amount = line.outstanding.toFixed(2);
-  const due = line.dueDate.toLocaleDateString("en-US", {
+  const due = formatCalendarDate(line.dueDate, {
     month: "short",
     day: "numeric",
     year: "numeric",

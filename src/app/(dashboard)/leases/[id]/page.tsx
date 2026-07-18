@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { formatCalendarDate } from "@/lib/formatDate";
 import {
   buttonClass,
   cardClass,
@@ -74,8 +75,8 @@ export default async function LeaseDetailPage({ params }: { params: Promise<{ id
             </div>
           </div>
           <p className="text-sm text-zinc-600">
-            Started {lease.startDate.toLocaleDateString()}
-            {lease.endDate ? ` · Ended ${lease.endDate.toLocaleDateString()}` : ""}
+            Started {formatCalendarDate(lease.startDate)}
+            {lease.endDate ? ` · Ended ${formatCalendarDate(lease.endDate)}` : ""}
           </p>
           {lease.status === "ACTIVE" && (
             <button type="submit" className={`${buttonClass} self-start`}>

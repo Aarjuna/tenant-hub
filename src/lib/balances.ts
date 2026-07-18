@@ -1,6 +1,7 @@
 import { Prisma } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
 import { ensureRentChargesForLease } from "@/lib/rentCharges";
+import { formatCalendarDate } from "@/lib/formatDate";
 
 export type BalanceLineKind = "rent" | "utility";
 
@@ -70,7 +71,7 @@ export async function getTenantBalance(tenantId: string): Promise<{
         kind: "rent",
         id: charge.id,
         tenantId,
-        label: `Rent — ${charge.periodStart.toLocaleDateString("en-US", { month: "long", year: "numeric" })}`,
+        label: `Rent — ${formatCalendarDate(charge.periodStart, { month: "long", year: "numeric" })}`,
         propertyName: charge.lease.unit.property.name,
         unitLabel: charge.lease.unit.label,
         dueDate: charge.dueDate,
@@ -87,7 +88,7 @@ export async function getTenantBalance(tenantId: string): Promise<{
         kind: "utility",
         id: split.id,
         tenantId,
-        label: `${split.utilityBill.type} — ${split.utilityBill.billDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}`,
+        label: `${split.utilityBill.type} — ${formatCalendarDate(split.utilityBill.billDate, { month: "long", year: "numeric" })}`,
         propertyName: split.unit.property.name,
         unitLabel: split.unit.label,
         dueDate: split.utilityBill.dueDate,

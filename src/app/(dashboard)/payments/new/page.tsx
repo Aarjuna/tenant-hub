@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { getTenantBalance } from "@/lib/balances";
+import { formatCalendarDate } from "@/lib/formatDate";
 import { buttonClass, cardClass, inputClass, labelClass, selectClass } from "@/components/ui";
 import { recordPayment } from "../actions";
 
@@ -71,7 +72,7 @@ export default async function NewPaymentPage({
               <select id="target" name="target" required defaultValue={`${lines[0].kind}:${lines[0].id}`} className={selectClass}>
                 {lines.map((line) => (
                   <option key={`${line.kind}-${line.id}`} value={`${line.kind}:${line.id}`}>
-                    {line.label} — ${line.outstanding.toFixed(2)} owed (due {line.dueDate.toLocaleDateString()})
+                    {line.label} — ${line.outstanding.toFixed(2)} owed (due {formatCalendarDate(line.dueDate)})
                   </option>
                 ))}
               </select>
