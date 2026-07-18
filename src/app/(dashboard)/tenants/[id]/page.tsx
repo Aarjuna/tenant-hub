@@ -1,0 +1,138 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { db } from "@/lib/db";
+import { getTenantBalance } from "@/lib/balances";
+import { buttonClass, cardClass, secondaryButtonClass, sectionTitleClass } from "@/components/ui";
+import { sendManualReminder } from "./actions";
+
+export default async function TenantDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
+  const tenant = await db.tenant.findUnique({
+    where: { id },
+    include: {
+      leases: { include: { unit: { include: { property: true } } }, orderBy: { startDate: "desc" } },
+      payments: { orderBy: { paidDate: "desc" }, take: 20 },
+      reminderLogs: { orderBy: { createdAt: "desc" }, take: 20 },
+    },
+  });
+
+  if (!tenant) notFound();
+
+  const { lines, totalOutstanding } = await getTenantBalance(id);
+
+  return (
+    <div className="flex flex-col gap-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <Link href="/tenants" className="text-sm text-zinc-500 hover:text-zinc-900">
+            ← Tenants
+          </Link>
+          <h1 className="mt-1 text-2xl font-semibold text-zinc-900">
+            {tenant.firstName} {tenant.lastName}
+          </h1>
+          <p className="mt-1 text-sm text-zinc-500">
+            {tenant.email || "No email"} · {tenant.phone || "No phone"}
+          </p>
+        </div>
+        <Link href={`/payments/new?tenantId=${tenant.id}`} className={buttonClass}>
+          Record payment
+        </Link>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between">
+          <h2 className={sectionTitleClass}>Outstanding balance</h2>
+          <p className="text-lg font-semibold text-zinc-900">${totalOutstanding.toFixed(2)}</p>
+        </div>
+        <div className="mt-3 flex flex-col gap-3">
+          {lines.length === 0 && <p className="text-sm text-zinc-500">Nothing outstanding — all caught up.</p>}
+          {lines.map((line) => (
+            <div key={`${line.kind}-${line.id}`} className={cardClass}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-zinc-900">{line.label}</p>
+                  <p className="text-sm text-zinc-500">
+                    {line.propertyName} {line.unitLabel} · due {line.dueDate.toLocaleDateString()}
+                  </p>
+                </div>
+                <p className="font-medium text-zinc-900">${line.outstanding.toFixed(2)}</p>
+              </div>
+              <div className="mt-3 flex gap-2">
+                {tenant.email && (
+                  <form action={sendManualReminder}>
+                    <input type="hidden" name="tenantId" value={tenant.id} />
+                    <input type="hidden" name="lineKind" value={line.kind} />
+                    <input type="hidden" name="lineId" value={line.id} />
+                    <input type="hidden" name="channel" value="EMAIL" />
+                    <button type="submit" className={secondaryButtonClass}>
+                      Email reminder
+                    </button>
+                  </form>
+                )}
+                {tenant.phone && (
+                  <form action={sendManualReminder}>
+                    <input type="hidden" name="tenantId" value={tenant.id} />
+                    <input type="hidden" name="lineKind" value={line.kind} />
+                    <input type="hidden" name="lineId" value={line.id} />
+                    <input type="hidden" name="channel" value="SMS" />
+                    <button type="submit" className={secondaryButtonClass}>
+                      Text reminder
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className={sectionTitleClass}>Leases</h2>
+        <div className="mt-3 flex flex-col gap-3">
+          {tenant.leases.map((lease) => (
+            <Link key={lease.id} href={`/leases/${lease.id}`} className={`${cardClass} block hover:border-zinc-400`}>
+              <div className="flex items-center justify-between">
+                <p className="text-zinc-900">
+                  {lease.unit.property.name} — {lease.unit.label}
+                </p>
+                <span className="text-xs uppercase tracking-wide text-zinc-400">{lease.status}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className={sectionTitleClass}>Payment history</h2>
+        <div className="mt-3 flex flex-col gap-2">
+          {tenant.payments.length === 0 && <p className="text-sm text-zinc-500">No payments recorded yet.</p>}
+          {tenant.payments.map((payment) => (
+            <div key={payment.id} className="flex items-center justify-between rounded-md border border-zinc-200 px-4 py-2 text-sm">
+              <span className="text-zinc-700">
+                {payment.paidDate.toLocaleDateString()} {payment.method ? `· ${payment.method}` : ""}
+              </span>
+              <span className="font-medium text-zinc-900">${payment.amount.toFixed(2)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className={sectionTitleClass}>Reminder history</h2>
+        <div className="mt-3 flex flex-col gap-2">
+          {tenant.reminderLogs.length === 0 && <p className="text-sm text-zinc-500">No reminders sent yet.</p>}
+          {tenant.reminderLogs.map((log) => (
+            <div key={log.id} className="flex items-center justify-between rounded-md border border-zinc-200 px-4 py-2 text-sm">
+              <span className="text-zinc-700">
+                {log.createdAt.toLocaleString()} · {log.type.replaceAll("_", " ").toLowerCase()} · {log.channel} ·{" "}
+                {log.triggeredBy}
+              </span>
+              <span className={log.status === "SENT" ? "text-green-600" : "text-red-600"}>{log.status}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

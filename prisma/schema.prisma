@@ -1,0 +1,163 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SplitMethod {
+  EQUAL
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum LeaseStatus {
+  ACTIVE
+  ENDED
+  UPCOMING
+}
+
+enum ReminderChannel {
+  EMAIL
+  SMS
+}
+
+enum ReminderType {
+  RENT_DUE_SOON
+  RENT_OVERDUE
+  UTILITY_DUE_SOON
+  UTILITY_OVERDUE
+}
+
+enum ReminderStatus {
+  SENT
+  FAILED
+}
+
+model Property {
+  id           String        @id @default(cuid())
+  name         String
+  address      String
+  units        Unit[]
+  utilityBills UtilityBill[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Unit {
+  id            String             @id @default(cuid())
+  propertyId    String
+  property      Property           @relation(fields: [propertyId], references: [id])
+  label         String
+  leases        Lease[]
+  utilitySplits UtilityBillSplit[]
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@unique([propertyId, label])
+}
+
+model Tenant {
+  id           String        @id @default(cuid())
+  firstName    String
+  lastName     String
+  email        String?
+  phone        String?
+  leases       Lease[]
+  payments     Payment[]
+  reminderLogs ReminderLog[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Lease {
+  id          String       @id @default(cuid())
+  unitId      String
+  unit        Unit         @relation(fields: [unitId], references: [id])
+  tenantId    String
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  rentAmount  Decimal      @db.Decimal(10, 2)
+  dueDay      Int
+  startDate   DateTime
+  endDate     DateTime?
+  status      LeaseStatus  @default(ACTIVE)
+  rentCharges RentCharge[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model RentCharge {
+  id          String    @id @default(cuid())
+  leaseId     String
+  lease       Lease     @relation(fields: [leaseId], references: [id])
+  periodStart DateTime
+  dueDate     DateTime
+  amount      Decimal   @db.Decimal(10, 2)
+  payments    Payment[]
+  createdAt   DateTime  @default(now())
+
+  @@unique([leaseId, periodStart])
+}
+
+model UtilityBill {
+  id          String             @id @default(cuid())
+  propertyId  String
+  property    Property           @relation(fields: [propertyId], references: [id])
+  type        String
+  totalAmount Decimal            @db.Decimal(10, 2)
+  billDate    DateTime
+  dueDate     DateTime
+  splitMethod SplitMethod        @default(EQUAL)
+  splits      UtilityBillSplit[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model UtilityBillSplit {
+  id            String      @id @default(cuid())
+  utilityBillId String
+  utilityBill   UtilityBill @relation(fields: [utilityBillId], references: [id])
+  unitId        String
+  unit          Unit        @relation(fields: [unitId], references: [id])
+  amount        Decimal     @db.Decimal(10, 2)
+  percentage    Decimal?    @db.Decimal(5, 2)
+  payments      Payment[]
+  createdAt     DateTime    @default(now())
+
+  @@unique([utilityBillId, unitId])
+}
+
+model Payment {
+  id                 String            @id @default(cuid())
+  tenantId           String
+  tenant             Tenant            @relation(fields: [tenantId], references: [id])
+  rentChargeId       String?
+  rentCharge         RentCharge?       @relation(fields: [rentChargeId], references: [id])
+  utilityBillSplitId String?
+  utilityBillSplit   UtilityBillSplit? @relation(fields: [utilityBillSplitId], references: [id])
+  amount             Decimal           @db.Decimal(10, 2)
+  paidDate           DateTime          @default(now())
+  method             String?
+  notes              String?
+  createdAt          DateTime          @default(now())
+}
+
+model ReminderLog {
+  id                 String          @id @default(cuid())
+  tenantId           String
+  tenant             Tenant          @relation(fields: [tenantId], references: [id])
+  type               ReminderType
+  channel            ReminderChannel
+  status             ReminderStatus
+  rentChargeId       String?
+  utilityBillSplitId String?
+  triggeredBy        String
+  message            String
+  errorMessage       String?
+  createdAt          DateTime        @default(now())
+}
