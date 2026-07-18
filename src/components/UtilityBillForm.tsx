@@ -12,6 +12,8 @@ type PropertyWithUnits = {
 
 type SplitMethod = "EQUAL" | "PERCENTAGE" | "FIXED_AMOUNT";
 
+const UTILITY_TYPES = ["Enbridge", "Toronto Water", "Toronto Hydro"];
+
 export function UtilityBillForm({
   properties,
   action,
@@ -84,7 +86,16 @@ export function UtilityBillForm({
           <label htmlFor="type" className={labelClass}>
             Type
           </label>
-          <input id="type" name="type" required className={inputClass} placeholder="electric" />
+          <select id="type" name="type" required defaultValue="" className={selectClass}>
+            <option value="" disabled>
+              Select a utility
+            </option>
+            {UTILITY_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="totalAmount" className={labelClass}>
