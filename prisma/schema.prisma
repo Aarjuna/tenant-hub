@@ -52,7 +52,7 @@ model Property {
 model Unit {
   id            String             @id @default(cuid())
   propertyId    String
-  property      Property           @relation(fields: [propertyId], references: [id])
+  property      Property           @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   label         String
   leases        Lease[]
   utilitySplits UtilityBillSplit[]
@@ -78,7 +78,7 @@ model Tenant {
 model Lease {
   id          String       @id @default(cuid())
   unitId      String
-  unit        Unit         @relation(fields: [unitId], references: [id])
+  unit        Unit         @relation(fields: [unitId], references: [id], onDelete: Cascade)
   tenantId    String
   tenant      Tenant       @relation(fields: [tenantId], references: [id])
   rentAmount  Decimal      @db.Decimal(10, 2)
@@ -94,7 +94,7 @@ model Lease {
 model RentCharge {
   id          String    @id @default(cuid())
   leaseId     String
-  lease       Lease     @relation(fields: [leaseId], references: [id])
+  lease       Lease     @relation(fields: [leaseId], references: [id], onDelete: Cascade)
   periodStart DateTime
   dueDate     DateTime
   amount      Decimal   @db.Decimal(10, 2)
@@ -107,7 +107,7 @@ model RentCharge {
 model UtilityBill {
   id          String             @id @default(cuid())
   propertyId  String
-  property    Property           @relation(fields: [propertyId], references: [id])
+  property    Property           @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   type        String
   totalAmount Decimal            @db.Decimal(10, 2)
   billDate    DateTime
@@ -121,9 +121,9 @@ model UtilityBill {
 model UtilityBillSplit {
   id            String      @id @default(cuid())
   utilityBillId String
-  utilityBill   UtilityBill @relation(fields: [utilityBillId], references: [id])
+  utilityBill   UtilityBill @relation(fields: [utilityBillId], references: [id], onDelete: Cascade)
   unitId        String
-  unit          Unit        @relation(fields: [unitId], references: [id])
+  unit          Unit        @relation(fields: [unitId], references: [id], onDelete: Cascade)
   amount        Decimal     @db.Decimal(10, 2)
   percentage    Decimal?    @db.Decimal(5, 2)
   payments      Payment[]
@@ -137,9 +137,9 @@ model Payment {
   tenantId           String
   tenant             Tenant            @relation(fields: [tenantId], references: [id])
   rentChargeId       String?
-  rentCharge         RentCharge?       @relation(fields: [rentChargeId], references: [id])
+  rentCharge         RentCharge?       @relation(fields: [rentChargeId], references: [id], onDelete: Cascade)
   utilityBillSplitId String?
-  utilityBillSplit   UtilityBillSplit? @relation(fields: [utilityBillSplitId], references: [id])
+  utilityBillSplit   UtilityBillSplit? @relation(fields: [utilityBillSplitId], references: [id], onDelete: Cascade)
   amount             Decimal           @db.Decimal(10, 2)
   paidDate           DateTime          @default(now())
   method             String?

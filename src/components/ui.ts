@@ -6,5 +6,7 @@ export const buttonClass =
   "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50";
 export const secondaryButtonClass =
   "rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50";
+export const dangerButtonClass =
+  "rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50";
 export const cardClass = "rounded-lg border border-zinc-200 bg-white p-6 shadow-sm";
 export const sectionTitleClass = "text-lg font-semibold text-zinc-900";

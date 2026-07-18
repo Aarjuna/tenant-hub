@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { buttonClass, cardClass, inputClass, labelClass, sectionTitleClass } from "@/components/ui";
-import { createUnit } from "./actions";
+import { buttonClass, cardClass, dangerButtonClass, inputClass, labelClass, sectionTitleClass } from "@/components/ui";
+import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
+import { createUnit, deleteProperty } from "./actions";
 
 export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -88,6 +89,18 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             </Link>
           ))}
         </div>
+      </div>
+
+      <div className="border-t border-zinc-200 pt-6">
+        <form action={deleteProperty}>
+          <input type="hidden" name="propertyId" value={property.id} />
+          <ConfirmSubmitButton
+            className={dangerButtonClass}
+            confirmMessage={`Delete "${property.name}"? This permanently deletes all its units, leases, rent charges, utility bills, and payment history. This cannot be undone.`}
+          >
+            Delete property
+          </ConfirmSubmitButton>
+        </form>
       </div>
     </div>
   );
