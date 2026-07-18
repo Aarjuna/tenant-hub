@@ -1,5 +1,6 @@
 "use server";
 
+import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdminSession } from "@/lib/auth/session";
@@ -7,6 +8,50 @@ import { db } from "@/lib/db";
 import { getTenantBalance } from "@/lib/balances";
 import { sendReminder } from "@/lib/reminders/send";
 import { ReminderChannel } from "@/generated/prisma/client";
+
+const tenantSchema = z.object({
+  tenantId: z.string().min(1),
+  firstName: z.string().trim().min(1, "First name is required"),
+  lastName: z.string().trim().min(1, "Last name is required"),
+  email: z
+    .string()
+    .trim()
+    .email()
+    .optional()
+    .or(z.literal(""))
+    .transform((v) => (v ? v : undefined)),
+  phone: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((v) => (v ? v : undefined)),
+});
+
+export async function updateTenant(formData: FormData): Promise<void> {
+  await requireAdminSession();
+
+  const parsed = tenantSchema.parse({
+    tenantId: formData.get("tenantId"),
+    firstName: formData.get("firstName"),
+    lastName: formData.get("lastName"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+  });
+
+  await db.tenant.update({
+    where: { id: parsed.tenantId },
+    data: {
+      firstName: parsed.firstName,
+      lastName: parsed.lastName,
+      email: parsed.email ?? null,
+      phone: parsed.phone ?? null,
+    },
+  });
+
+  revalidatePath(`/tenants/${parsed.tenantId}`);
+  revalidatePath("/tenants");
+}
 
 export async function sendManualReminder(formData: FormData): Promise<void> {
   await requireAdminSession();

@@ -2,9 +2,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getTenantBalance } from "@/lib/balances";
-import { buttonClass, cardClass, dangerButtonClass, secondaryButtonClass, sectionTitleClass } from "@/components/ui";
+import {
+  buttonClass,
+  cardClass,
+  dangerButtonClass,
+  inputClass,
+  labelClass,
+  secondaryButtonClass,
+  sectionTitleClass,
+} from "@/components/ui";
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
-import { deleteTenant, sendManualReminder } from "./actions";
+import { deleteTenant, sendManualReminder, updateTenant } from "./actions";
 
 export default async function TenantDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -39,6 +47,46 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
         <Link href={`/payments/new?tenantId=${tenant.id}`} className={buttonClass}>
           Record payment
         </Link>
+      </div>
+
+      <div className={cardClass}>
+        <h2 className={sectionTitleClass}>Edit details</h2>
+        <form action={updateTenant} className="mt-4 grid grid-cols-2 gap-4">
+          <input type="hidden" name="tenantId" value={tenant.id} />
+          <div>
+            <label htmlFor="firstName" className={labelClass}>
+              First name
+            </label>
+            <input id="firstName" name="firstName" required defaultValue={tenant.firstName} className={inputClass} />
+          </div>
+          <div>
+            <label htmlFor="lastName" className={labelClass}>
+              Last name
+            </label>
+            <input id="lastName" name="lastName" required defaultValue={tenant.lastName} className={inputClass} />
+          </div>
+          <div>
+            <label htmlFor="email" className={labelClass}>
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              defaultValue={tenant.email ?? ""}
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="phone" className={labelClass}>
+              Phone (E.164, e.g. +15551234567)
+            </label>
+            <input id="phone" name="phone" defaultValue={tenant.phone ?? ""} className={inputClass} />
+          </div>
+          <button type="submit" className={`${buttonClass} col-span-2 self-start`}>
+            Save changes
+          </button>
+        </form>
       </div>
 
       <div>
