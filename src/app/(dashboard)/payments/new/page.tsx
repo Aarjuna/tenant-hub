@@ -15,7 +15,7 @@ export default async function NewPaymentPage({
     const tenants = await db.tenant.findMany({ orderBy: { lastName: "asc" } });
     return (
       <div className="flex flex-col gap-6">
-        <h1 className="text-2xl font-semibold text-zinc-900">Record payment</h1>
+        <h1 className="text-2xl font-bold text-[#323338]">Record payment</h1>
         <div className={cardClass}>
           <form action="/payments/new" className="flex items-end gap-3">
             <div className="flex-1">
@@ -44,7 +44,7 @@ export default async function NewPaymentPage({
 
   const tenant = await db.tenant.findUnique({ where: { id: tenantId } });
   if (!tenant) {
-    return <p className="text-sm text-red-600">Tenant not found.</p>;
+    return <p className="text-sm text-[#e2445c]">Tenant not found.</p>;
   }
 
   const { lines } = await getTenantBalance(tenantId);
@@ -52,10 +52,10 @@ export default async function NewPaymentPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href={`/tenants/${tenant.id}`} className="text-sm text-zinc-600 hover:text-zinc-900">
+        <Link href={`/tenants/${tenant.id}`} className="text-sm text-zinc-600 hover:text-[#323338]">
           ← {tenant.firstName} {tenant.lastName}
         </Link>
-        <h1 className="mt-1 text-2xl font-semibold text-zinc-900">Record payment</h1>
+        <h1 className="mt-1 text-2xl font-bold text-[#323338]">Record payment</h1>
       </div>
 
       {lines.length === 0 ? (

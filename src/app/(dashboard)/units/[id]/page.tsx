@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { buttonClass, cardClass, sectionTitleClass } from "@/components/ui";
+import { buttonClass, cardClass, leaseStatusTone, pillClass, sectionTitleClass } from "@/components/ui";
 
 export default async function UnitDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -21,10 +21,10 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <Link href={`/properties/${unit.property.id}`} className="text-sm text-zinc-600 hover:text-zinc-900">
+        <Link href={`/properties/${unit.property.id}`} className="text-sm text-zinc-600 hover:text-[#323338]">
           ← {unit.property.name}
         </Link>
-        <h1 className="mt-1 text-2xl font-semibold text-zinc-900">{unit.label}</h1>
+        <h1 className="mt-1 text-2xl font-bold text-[#323338]">{unit.label}</h1>
       </div>
 
       <div className={cardClass}>
@@ -39,7 +39,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
         {activeLease ? (
           <div className="mt-3 text-sm text-zinc-700">
             <p>
-              <Link href={`/tenants/${activeLease.tenant.id}`} className="font-medium text-zinc-900 hover:underline">
+              <Link href={`/tenants/${activeLease.tenant.id}`} className="font-medium text-[#323338] hover:underline">
                 {activeLease.tenant.firstName} {activeLease.tenant.lastName}
               </Link>
             </p>
@@ -47,7 +47,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
               ${activeLease.rentAmount.toFixed(2)}/mo · due day {activeLease.dueDay} · started{" "}
               {activeLease.startDate.toLocaleDateString()}
             </p>
-            <Link href={`/leases/${activeLease.id}`} className="mt-2 inline-block text-zinc-600 hover:text-zinc-900">
+            <Link href={`/leases/${activeLease.id}`} className="mt-2 inline-block text-zinc-600 hover:text-[#323338]">
               Edit lease →
             </Link>
           </div>
@@ -64,7 +64,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
             <Link key={lease.id} href={`/leases/${lease.id}`} className={`${cardClass} block hover:border-zinc-400`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-zinc-900">
+                  <p className="font-medium text-[#323338]">
                     {lease.tenant.firstName} {lease.tenant.lastName}
                   </p>
                   <p className="text-sm text-zinc-600">
@@ -72,7 +72,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ id:
                     {lease.endDate ? lease.endDate.toLocaleDateString() : "present"}
                   </p>
                 </div>
-                <span className="text-xs uppercase tracking-wide text-zinc-600">{lease.status}</span>
+                <span className={pillClass(leaseStatusTone(lease.status))}>{lease.status}</span>
               </div>
             </Link>
           ))}

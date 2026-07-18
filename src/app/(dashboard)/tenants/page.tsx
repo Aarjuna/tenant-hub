@@ -14,7 +14,7 @@ export default async function TenantsPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Tenants</h1>
+        <h1 className="text-2xl font-bold text-[#323338]">Tenants</h1>
         <p className="mt-1 text-sm text-zinc-600">Everyone currently or previously renting from you.</p>
       </div>
 
@@ -26,7 +26,7 @@ export default async function TenantsPage() {
             <Link key={tenant.id} href={`/tenants/${tenant.id}`} className={`${cardClass} block hover:border-zinc-400`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-zinc-900">
+                  <p className="font-medium text-[#323338]">
                     {tenant.firstName} {tenant.lastName}
                   </p>
                   <p className="text-sm text-zinc-600">{tenant.email || tenant.phone || "No contact info on file"}</p>

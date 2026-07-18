@@ -1,3 +1,5 @@
+import { buttonClass, inputClass, labelClass } from "@/components/ui";
+
 export default async function LoginPage({
   searchParams,
 }: {
@@ -6,20 +8,25 @@ export default async function LoginPage({
   const { error } = await searchParams;
 
   return (
-    <div className="flex flex-1 items-center justify-center bg-zinc-50 px-4">
-      <div className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-1 text-xl font-semibold text-zinc-900">Tenant Hub</h1>
+    <div className="flex flex-1 items-center justify-center bg-[#f6f7fb] px-4">
+      <div className="w-full max-w-sm rounded-xl border border-zinc-200/80 bg-white p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="mb-6 flex items-center gap-2">
+          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#0073ea] text-base font-black text-white">
+            T
+          </span>
+          <span className="text-lg font-bold text-[#323338]">Tenant Hub</span>
+        </div>
         <p className="mb-6 text-sm text-zinc-600">Sign in to manage your properties.</p>
 
         {error && (
-          <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="mb-4 rounded-md bg-[#e2445c]/10 px-3 py-2 text-sm text-[#e2445c]">
             Invalid email or password.
           </p>
         )}
 
         <form action="/api/login" method="POST" className="flex flex-col gap-4">
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-zinc-700">
+            <label htmlFor="email" className={labelClass}>
               Email
             </label>
             <input
@@ -28,11 +35,11 @@ export default async function LoginPage({
               type="email"
               required
               autoComplete="username"
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none"
+              className={inputClass}
             />
           </div>
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-zinc-700">
+            <label htmlFor="password" className={labelClass}>
               Password
             </label>
             <input
@@ -41,13 +48,10 @@ export default async function LoginPage({
               type="password"
               required
               autoComplete="current-password"
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none"
+              className={inputClass}
             />
           </div>
-          <button
-            type="submit"
-            className="mt-2 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
-          >
+          <button type="submit" className={`${buttonClass} mt-2`}>
             Sign in
           </button>
         </form>

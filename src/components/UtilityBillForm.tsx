@@ -155,14 +155,14 @@ export function UtilityBillForm({
                     className={`${inputClass} w-28`}
                   />
                 )}
-                <span className="w-20 text-right text-sm text-zinc-900">
+                <span className="w-20 text-right text-sm text-[#323338]">
                   {splitForUnit ? `$${splitForUnit.amount.toFixed(2)}` : "—"}
                 </span>
               </div>
             );
           })}
         </div>
-        {previewError && <p className="mt-3 text-sm text-red-600">{previewError}</p>}
+        {previewError && <p className="mt-3 text-sm text-[#e2445c]">{previewError}</p>}
         {!previewError && !previewSplits && (
           <p className="mt-3 text-sm text-zinc-600">Enter a total amount to see the split.</p>
         )}

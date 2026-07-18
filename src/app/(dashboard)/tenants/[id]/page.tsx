@@ -8,6 +8,9 @@ import {
   dangerButtonClass,
   inputClass,
   labelClass,
+  leaseStatusTone,
+  pillClass,
+  reminderStatusTone,
   secondaryButtonClass,
   sectionTitleClass,
 } from "@/components/ui";
@@ -41,10 +44,10 @@ export default async function TenantDetailPage({
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <div>
-          <Link href="/tenants" className="text-sm text-zinc-600 hover:text-zinc-900">
+          <Link href="/tenants" className="text-sm text-zinc-600 hover:text-[#323338]">
             ← Tenants
           </Link>
-          <h1 className="mt-1 text-2xl font-semibold text-zinc-900">
+          <h1 className="mt-1 text-2xl font-bold text-[#323338]">
             {tenant.firstName} {tenant.lastName}
           </h1>
           <p className="mt-1 text-sm text-zinc-600">
@@ -102,7 +105,9 @@ export default async function TenantDetailPage({
       <div>
         <div className="flex items-center justify-between">
           <h2 className={sectionTitleClass}>Outstanding balance</h2>
-          <p className="text-lg font-semibold text-zinc-900">${totalOutstanding.toFixed(2)}</p>
+          <p className={`text-lg font-bold ${totalOutstanding.greaterThan(0) ? "text-[#e2445c]" : "text-[#00c875]"}`}>
+            ${totalOutstanding.toFixed(2)}
+          </p>
         </div>
         <div className="mt-3 flex flex-col gap-3">
           {lines.length === 0 && <p className="text-sm text-zinc-600">Nothing outstanding — all caught up.</p>}
@@ -110,12 +115,12 @@ export default async function TenantDetailPage({
             <div key={`${line.kind}-${line.id}`} className={cardClass}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-zinc-900">{line.label}</p>
+                  <p className="font-medium text-[#323338]">{line.label}</p>
                   <p className="text-sm text-zinc-600">
                     {line.propertyName} {line.unitLabel} · due {line.dueDate.toLocaleDateString()}
                   </p>
                 </div>
-                <p className="font-medium text-zinc-900">${line.outstanding.toFixed(2)}</p>
+                <p className="font-bold text-[#e2445c]">${line.outstanding.toFixed(2)}</p>
               </div>
               <div className="mt-3 flex gap-2">
                 {tenant.email && (
@@ -152,10 +157,10 @@ export default async function TenantDetailPage({
           {tenant.leases.map((lease) => (
             <Link key={lease.id} href={`/leases/${lease.id}`} className={`${cardClass} block hover:border-zinc-400`}>
               <div className="flex items-center justify-between">
-                <p className="text-zinc-900">
+                <p className="text-[#323338]">
                   {lease.unit.property.name} — {lease.unit.label}
                 </p>
-                <span className="text-xs uppercase tracking-wide text-zinc-600">{lease.status}</span>
+                <span className={pillClass(leaseStatusTone(lease.status))}>{lease.status}</span>
               </div>
             </Link>
           ))}
@@ -171,7 +176,7 @@ export default async function TenantDetailPage({
               <span className="text-zinc-700">
                 {payment.paidDate.toLocaleDateString()} {payment.method ? `· ${payment.method}` : ""}
               </span>
-              <span className="font-medium text-zinc-900">${payment.amount.toFixed(2)}</span>
+              <span className="font-medium text-[#323338]">${payment.amount.toFixed(2)}</span>
             </div>
           ))}
         </div>
@@ -187,7 +192,7 @@ export default async function TenantDetailPage({
                 {log.createdAt.toLocaleString()} · {log.type.replaceAll("_", " ").toLowerCase()} · {log.channel} ·{" "}
                 {log.triggeredBy}
               </span>
-              <span className={log.status === "SENT" ? "text-green-600" : "text-red-600"}>{log.status}</span>
+              <span className={pillClass(reminderStatusTone(log.status))}>{log.status}</span>
             </div>
           ))}
         </div>

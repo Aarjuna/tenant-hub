@@ -1,7 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { buttonClass, cardClass, inputClass, labelClass, secondaryButtonClass, sectionTitleClass } from "@/components/ui";
+import {
+  buttonClass,
+  cardClass,
+  inputClass,
+  labelClass,
+  leaseStatusTone,
+  pillClass,
+  secondaryButtonClass,
+  sectionTitleClass,
+} from "@/components/ui";
 import { endLease, updateLease } from "../actions";
 
 export default async function LeaseDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -17,13 +26,13 @@ export default async function LeaseDetailPage({ params }: { params: Promise<{ id
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href={`/units/${lease.unit.id}`} className="text-sm text-zinc-600 hover:text-zinc-900">
+        <Link href={`/units/${lease.unit.id}`} className="text-sm text-zinc-600 hover:text-[#323338]">
           ← {lease.unit.property.name} — {lease.unit.label}
         </Link>
-        <h1 className="mt-1 text-2xl font-semibold text-zinc-900">
+        <h1 className="mt-1 text-2xl font-bold text-[#323338]">
           Lease — {lease.tenant.firstName} {lease.tenant.lastName}
         </h1>
-        <span className="mt-1 inline-block text-xs uppercase tracking-wide text-zinc-600">{lease.status}</span>
+        <span className={`mt-2 ${pillClass(leaseStatusTone(lease.status))}`}>{lease.status}</span>
       </div>
 
       <div className={cardClass}>

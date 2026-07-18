@@ -21,10 +21,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <Link href="/properties" className="text-sm text-zinc-600 hover:text-zinc-900">
+        <Link href="/properties" className="text-sm text-zinc-600 hover:text-[#323338]">
           ← Properties
         </Link>
-        <h1 className="mt-1 text-2xl font-semibold text-zinc-900">{property.name}</h1>
+        <h1 className="mt-1 text-2xl font-bold text-[#323338]">{property.name}</h1>
         <p className="mt-1 text-sm text-zinc-600">{property.address}</p>
       </div>
 
@@ -37,7 +37,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             return (
               <Link key={unit.id} href={`/units/${unit.id}`} className={`${cardClass} block hover:border-zinc-400`}>
                 <div className="flex items-center justify-between">
-                  <p className="font-medium text-zinc-900">{unit.label}</p>
+                  <p className="font-medium text-[#323338]">{unit.label}</p>
                   <p className="text-sm text-zinc-600">
                     {lease ? `${lease.tenant.firstName} ${lease.tenant.lastName} · $${lease.rentAmount}/mo` : "Vacant"}
                   </p>
@@ -67,7 +67,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
       <div>
         <div className="flex items-center justify-between">
           <h2 className={sectionTitleClass}>Utility bills</h2>
-          <Link href={`/utility-bills/new?propertyId=${property.id}`} className="text-sm text-zinc-600 hover:text-zinc-900">
+          <Link href={`/utility-bills/new?propertyId=${property.id}`} className="text-sm text-zinc-600 hover:text-[#323338]">
             + Add utility bill
           </Link>
         </div>
@@ -79,7 +79,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             <Link key={bill.id} href={`/utility-bills/${bill.id}`} className={`${cardClass} block hover:border-zinc-400`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium capitalize text-zinc-900">{bill.type}</p>
+                  <p className="font-medium capitalize text-[#323338]">{bill.type}</p>
                   <p className="text-sm text-zinc-600">
                     Billed {bill.billDate.toLocaleDateString()} · Due {bill.dueDate.toLocaleDateString()}
                   </p>

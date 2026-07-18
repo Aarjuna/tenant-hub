@@ -12,7 +12,7 @@ export default async function PropertiesPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Properties</h1>
+        <h1 className="text-2xl font-bold text-[#323338]">Properties</h1>
         <p className="mt-1 text-sm text-zinc-600">Your rental properties and their units.</p>
       </div>
 
@@ -28,7 +28,7 @@ export default async function PropertiesPage() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-zinc-900">{property.name}</p>
+                <p className="font-medium text-[#323338]">{property.name}</p>
                 <p className="text-sm text-zinc-600">{property.address}</p>
               </div>
               <p className="text-sm text-zinc-600">
