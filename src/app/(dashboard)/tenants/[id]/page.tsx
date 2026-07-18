@@ -14,8 +14,15 @@ import {
 import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
 import { deleteTenant, sendManualReminder, updateTenant } from "./actions";
 
-export default async function TenantDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function TenantDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ saved?: string }>;
+}) {
   const { id } = await params;
+  const { saved } = await searchParams;
 
   const tenant = await db.tenant.findUnique({
     where: { id },
@@ -51,6 +58,9 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
 
       <div className={cardClass}>
         <h2 className={sectionTitleClass}>Edit details</h2>
+        {saved === "1" && (
+          <p className="mt-3 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">Saved.</p>
+        )}
         <form action={updateTenant} className="mt-4 grid grid-cols-2 gap-4">
           <input type="hidden" name="tenantId" value={tenant.id} />
           <div>

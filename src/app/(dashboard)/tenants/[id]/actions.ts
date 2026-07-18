@@ -51,6 +51,7 @@ export async function updateTenant(formData: FormData): Promise<void> {
 
   revalidatePath(`/tenants/${parsed.tenantId}`);
   revalidatePath("/tenants");
+  redirect(`/tenants/${parsed.tenantId}?saved=1`);
 }
 
 export async function sendManualReminder(formData: FormData): Promise<void> {
